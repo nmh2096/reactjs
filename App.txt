@@ -1,0 +1,67 @@
+import { useState } from 'react'
+import './assets/scss/App.scss'
+// import CssScope from './components/CssScope';
+// import WelcomeReact from './components/WelcomeReact'
+
+interface IStudent {
+  name: string,
+  class: string,
+  dob: string,
+}
+
+
+function App() {
+  // const [count, setCount] = useState<number>(0) // string thì phải truyền chuỗi vào còn number thì truyền số 
+  const [studentInfo, setStudentInfo] = useState<IStudent>({
+    name: 'ABC',
+    class: '6C18',
+    dob: '2000'
+  });
+  const [nameValue, setNameValue] = useState<string>('')
+
+  const onChangeName = (e: any) => {
+    console.log(e.target.value);
+    setNameValue(e.target.value)
+  }
+
+  const updateName = () => {
+     setStudentInfo({
+       ...studentInfo,
+       name: nameValue,
+      }
+     )
+  }
+  // let a: number = 0;
+
+  // const countUp = () => {
+  //   a += 1;
+  //   console.log(a);
+  // };
+  // const countUp = () => {
+  //   setCount( prev => prev + 1); }
+
+  // const checkEmit = (params: string) => {
+  //   console.log(params);
+
+  // }
+
+  return (
+    <div className="app-container">
+      {/* <div className="group-input">
+        <input type="text" value={nameValue} onChange={onChangeName} />
+        <button onClick={updateName} >Update</button>
+      </div>
+      <p>{studentInfo.name}</p>
+      <p>{studentInfo.class}</p>
+      <p>{studentInfo.dob}</p> */}
+      {
+      }
+    </div>
+
+  )
+}
+
+
+
+
+export default App

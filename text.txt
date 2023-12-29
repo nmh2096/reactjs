@@ -1,0 +1,19 @@
+ {
+        count % 2 == 0 ? (<p>Even</p>) : (<p>Odd</p>)
+      }
+
+      <div className="list">
+        <span>title</span>
+        <span>status</span>
+      </div>
+
+      {
+        todoList.map((item, index) => (
+          <div className="list" key={index}>
+            <span>{item.title}: </span>
+            <span>{item.status}</span>
+          </div>
+        ))
+        }
+
+        {/* v-for: thay vì truyền for vào vòng lặp thì render ra 1 jsx trong map. return ra 1 jsx bắt buộc dùng ngoặc tròn sau dấu suy ra */}
