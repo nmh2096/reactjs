@@ -8,12 +8,13 @@ import { TodoContainer } from "./style";
 
 export default function Todo() {
     const id = useId()
+    
     const [formData, setFormData] = useState<ITodo>({
         id,
         todo: "",
         isEdit: false,
     })
-    
+
     const [todo, setTodo] = useState<ITodo[]>([]);
     /**
      * ! Create a new Todo
@@ -29,9 +30,7 @@ export default function Todo() {
         console.log(formData);
 
     };
-    const onChangeModal = (e: ChangeEvent<HTMLInputElement>) => {
-        inputValue(e.target?.value)
-    };
+
     const createInput = () => {
         setFormData({
             id: "",
@@ -42,15 +41,28 @@ export default function Todo() {
         setTodo([...todo, formData])
     };
 
+    /**
+     * ! Handle Dialog
+     */
+
     const [isOpen, openModal] = useState(false);
+
+    const [setTitle, titleModal] = useState('UpdateModal')
+
+    const [showInput, setShowInput] = useState(false);
 
     const updateTodo = () => {
         openModal(true);
+        titleModal('UpdateModal');
+        setShowInput(true);
     };
 
-    const [updateValue, inputValue] = useState<string>('');
+    const deleteTodo = () => {
+        openModal(true);
+        titleModal('DeleteModal');
+        setShowInput(false);
+    };
 
-    const [isUpdateModal, isComfirmModal] = useState(false);
 
     return (
         <TodoContainer>
@@ -76,7 +88,7 @@ export default function Todo() {
                         </div>
                         <div className="group-btn">
                             <EditIcon className="warning" onClick={updateTodo} />
-                            <DeleteIcon className="error" />
+                            <DeleteIcon className="error" onClick={deleteTodo} />
                             {/* <button>Comfirm</button> */}
                         </div>
                     </div>
@@ -84,11 +96,12 @@ export default function Todo() {
             </div>
             <Dialog
                 open={isOpen}
-                title="Update Todo"
-                value={updateValue}
-                onChangeDialog={onChangeModal}
-                updateModal={isUpdateModal}
+                title={setTitle}
             >
+                {/* <TextField
+                label="Todo"
+                /> */}
+                {showInput && <input type="text" />}
             </Dialog>
         </TodoContainer>
     )

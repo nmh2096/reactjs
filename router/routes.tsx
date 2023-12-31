@@ -1,4 +1,4 @@
-import Dashboard from "../pages/dashboard"
+import Dashboard from "@/pages/dashboard"
 import Login from "../pages/login"
 import Todo from "../pages/todo";
 

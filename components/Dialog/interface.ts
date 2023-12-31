@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 export default interface IProps{
     /**
      // Reveal modal if true
@@ -8,4 +9,5 @@ export default interface IProps{
     value?: string;
     onChangeDialog?: any;
     updateModal?: any;
+    children?: ReactNode;
 }
