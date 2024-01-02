@@ -51,7 +51,7 @@ export default function Todo() {
 
     const createInput = () => {
         setFormData({
-            id: "",
+            id: Math.floor(Math.random() * 100000000000000),
             todo: "",
             isEdit: false,
         }
