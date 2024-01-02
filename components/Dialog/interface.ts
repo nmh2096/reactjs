@@ -6,8 +6,11 @@ export default interface IProps{
      */
     open: boolean;
     title?: string;
-    value?: string;
-    onChangeDialog?: any;
-    updateModal?: any;
+    /**Event children */
     children?: ReactNode;
+    submitBtn?: string;
+    /** Event: Click cancel button */
+    onCancel?: () => void;
+    /** Event: Click submit button */
+    onSubmit?: () => void;
 }

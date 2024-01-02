@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { TextField } from '@mui/material';
 
 export const TodoContainer = styled.div`
     display: flex;
@@ -34,4 +35,7 @@ export const TodoContainer = styled.div`
             }
         }
     }
+`;
+export const TextFieldStyle = styled(TextField)`
+    width: 100%;
 `;

@@ -2,33 +2,51 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button, TextField } from "@mui/material";
 import { ChangeEvent, useId, useState } from "react";
-import { Dialog } from "../../components";
+import { Dialog, DeleteDialog } from "../../components";
 import { ITodo } from "./interface";
-import { TodoContainer } from "./style";
+import { TodoContainer, TextFieldStyle } from "./style";
+
 
 export default function Todo() {
     const id = useId()
-    
+
     const [formData, setFormData] = useState<ITodo>({
         id,
         todo: "",
         isEdit: false,
     })
 
-    const [todo, setTodo] = useState<ITodo[]>([]);
+    const [todo, setTodo] = useState<ITodo[]>([
+        {
+            id: 1,
+            todo: "Wash dish",
+            isEdit: false,
+        },
+        {
+            id: 2,
+            todo: "Study",
+            isEdit: false,
+        }
+    ]);
     /**
      * ! Create a new Todo
      * @params
      * @return void
      */
-    const onChangeTodo = (e: ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
-            id: Math.floor(Math.random() * 100000000000000),
-            [e.target?.name]: e.target?.value, // thay đổi dòng input theo id
-        })
+    const onChangeTodo = (e: ChangeEvent<HTMLInputElement>, isUpdate: boolean = false) => {
+        if (isUpdate) {
+            setFormData({
+                ...formData,
+                [e.target?.name]: e.target?.value, // thay đổi dòng input theo id
+            })
+        } else {
+            setFormData({
+                ...formData,
+                id: Math.floor(Math.random() * 100000000000000),
+                [e.target?.name]: e.target?.value, // thay đổi dòng input theo id
+            })
+        }
         console.log(formData);
-
     };
 
     const createInput = () => {
@@ -45,24 +63,58 @@ export default function Todo() {
      * ! Handle Dialog
      */
 
-    const [isOpen, openModal] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-    const [setTitle, titleModal] = useState('UpdateModal')
+    const [titleModal, setTitleModal] = useState('UpdateModal')
 
-    const [showInput, setShowInput] = useState(false);
+    /** Update a todo
+     * @param
+     * @return void
+     */
 
-    const updateTodo = () => {
-        openModal(true);
-        titleModal('UpdateModal');
-        setShowInput(true);
+
+    const closeUpdateDialog = () => {
+        setFormData({
+            id,
+            todo: "",
+            isEdit: false,
+        })
+        setIsOpen(false)
+    }
+
+    const openDialog = (id: string | number) => {
+        const updatedItem = todo.find((item) => {
+            return item.id === id;
+        });
+        if (updatedItem) {
+            setFormData(updatedItem);
+        }
+        console.log(updatedItem);
+
+        setIsOpen(true);
+        setTitleModal('UpdateModal');
     };
 
-    const deleteTodo = () => {
-        openModal(true);
-        titleModal('DeleteModal');
-        setShowInput(false);
+    const closeDialog = (id: string | number) => {
+        setIsOpen(true);
+        setTitleModal('DeleteModal');
     };
 
+    const updateDialog = () => {
+        const updateData = todo.map(item => {
+            if (item.id === formData.id) {
+                return {
+                    ...formData,
+                    todo: formData.todo,
+                }
+            } else {
+                return item
+            }
+        })
+        setTodo(updateData)
+        console.log(updateData);
+        closeUpdateDialog()
+    }
 
     return (
         <TodoContainer>
@@ -87,8 +139,8 @@ export default function Todo() {
                             <span>{item.todo}</span>
                         </div>
                         <div className="group-btn">
-                            <EditIcon className="warning" onClick={updateTodo} />
-                            <DeleteIcon className="error" onClick={deleteTodo} />
+                            <EditIcon className="warning" onClick={() => openDialog(item.id)} />
+                            <DeleteIcon className="error" onClick={() => closeDialog(item.id)} />
                             {/* <button>Comfirm</button> */}
                         </div>
                     </div>
@@ -96,13 +148,21 @@ export default function Todo() {
             </div>
             <Dialog
                 open={isOpen}
-                title={setTitle}
+                title={titleModal}
+                submitBtn="Update"
+                onCancel={closeUpdateDialog}
+                onSubmit={updateDialog}
             >
-                {/* <TextField
-                label="Todo"
-                /> */}
-                {showInput && <input type="text" />}
+                <TextFieldStyle
+                    size='small'
+                    value={formData.todo}
+                    name='todo'
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeTodo(e, true)}
+                ></TextFieldStyle>
             </Dialog>
+            <DeleteDialog open={true}>
+
+            </DeleteDialog>
         </TodoContainer>
     )
 }

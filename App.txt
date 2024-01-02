@@ -65,3 +65,6 @@ function App() {
 
 
 export default App
+
+find cũng có thể dùng như map và filter, filter và map khi return trả ra 1 mảng và giữ nguyên các phần tử trong mảng đó
+find và return trả về item trong mảng 
