@@ -2,7 +2,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Button, TextField } from "@mui/material";
 import { ChangeEvent, useId, useState } from "react";
-import { Dialog, DeleteDialog } from "../../components";
+import { Dialog } from "../../components";
 import { ITodo } from "./interface";
 import { TodoContainer, TextFieldStyle } from "./style";
 
@@ -63,7 +63,8 @@ export default function Todo() {
      * ! Handle Dialog
      */
 
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpenUpdate, setIsOpenUpdate] = useState(false);
+    const [isOpenDelete, setIsOpenDelete] = useState(false);
 
     const [titleModal, setTitleModal] = useState('UpdateModal')
 
@@ -72,14 +73,14 @@ export default function Todo() {
      * @return void
      */
 
-
     const closeUpdateDialog = () => {
         setFormData({
             id,
             todo: "",
             isEdit: false,
         })
-        setIsOpen(false)
+        setIsOpenUpdate(false);
+        setIsOpenDelete(false);
     }
 
     const openDialog = (id: string | number) => {
@@ -90,14 +91,20 @@ export default function Todo() {
             setFormData(updatedItem);
         }
         console.log(updatedItem);
-
-        setIsOpen(true);
+        setIsOpenUpdate(true);
         setTitleModal('UpdateModal');
     };
 
     const closeDialog = (id: string | number) => {
-        setIsOpen(true);
+        const deleteItem = todo.find((item) => {
+            return item.id === id;
+        });
+        if (deleteItem) {
+            setFormData(deleteItem);
+        }
+        setIsOpenUpdate(false);
         setTitleModal('DeleteModal');
+        setIsOpenDelete(true);
     };
 
     const updateDialog = () => {
@@ -114,6 +121,20 @@ export default function Todo() {
         setTodo(updateData)
         console.log(updateData);
         closeUpdateDialog()
+    }
+
+    const deleteDialog = () => {
+        const deleteData = todo.filter((item) => {
+            if (item.id !== formData.id) {
+                return {
+                    ...formData,
+                    todo: formData.todo,
+                }
+            }
+        });
+        setTodo(deleteData);
+        console.log(deleteData);
+        closeUpdateDialog();
     }
 
     return (
@@ -141,13 +162,12 @@ export default function Todo() {
                         <div className="group-btn">
                             <EditIcon className="warning" onClick={() => openDialog(item.id)} />
                             <DeleteIcon className="error" onClick={() => closeDialog(item.id)} />
-                            {/* <button>Comfirm</button> */}
                         </div>
                     </div>
                 ))}
             </div>
             <Dialog
-                open={isOpen}
+                open={isOpenUpdate}
                 title={titleModal}
                 submitBtn="Update"
                 onCancel={closeUpdateDialog}
@@ -160,9 +180,15 @@ export default function Todo() {
                     onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeTodo(e, true)}
                 ></TextFieldStyle>
             </Dialog>
-            <DeleteDialog open={true}>
-
-            </DeleteDialog>
+            <Dialog
+                open={isOpenDelete}
+                title="Delete Todo"
+                submitBtn='Delete'
+                onCancel={closeUpdateDialog}
+                onSubmit={deleteDialog}
+            >
+                <h3>Are you sure????</h3>
+            </Dialog>
         </TodoContainer>
     )
 }

@@ -1,10 +1,9 @@
-import { DialogContainer } from './style';
-import IProps from './interface';
 import { Button } from '@mui/material';
-import { ChangeEvent } from 'react';
+import IProps from './interface';
+import { DialogContainer } from './style';
 
 export default function Dialog(props: IProps) {
-    const { open, children, title, submitBtn, onCancel, onSubmit } = props;
+    const { open, children, title, submitBtn, onCancel, onSubmit  } = props;
 
     return (
         <DialogContainer open={open}>
