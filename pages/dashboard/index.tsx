@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 export default function Dashboard() {
@@ -28,13 +28,22 @@ export default function Dashboard() {
         // setCount(prev => prev + 1);
     }
 
+    const goTodo = () => {
+        navigate("/todo/list")
+    }    
+
     return (
+        // <Navigate to={'/todo'} ></Navigate>
         <div>
             <p>{count}</p>
             <button onClick={countUp}>Up</button> <br />
             <p>{count2}</p>
             <button onClick={countUp2}>Up2</button>
-            <button onClick={() => navigate("/todo")}>Todo</button>
+            <button onClick={goTodo}>Todo</button>
+            <button onClick={() => navigate("/auth/login")}>Login</button>
+            <button onClick={() => navigate("/auth/register")}>Register</button>
+            <button onClick={() => navigate("/post/list")}>Posts</button>
+            <button onClick={() => navigate("/post/react-hook-form")}>React Hook Form</button>
         </div>
     )
 }
